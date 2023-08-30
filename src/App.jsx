@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import { LogIn } from './pages/LogIn'
+import { Post_data } from './pages/SignUp'
 import './App.css'
 
 
@@ -15,10 +15,9 @@ function App() {
       .then((data) => setMessage(data.message))
   }, [])
       
-
   return (
     <React.Fragment>
-      <LogIn/>
+      <Post_data/>
       <h1>{message}</h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
