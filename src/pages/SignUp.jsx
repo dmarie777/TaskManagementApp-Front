@@ -1,23 +1,31 @@
-import React, { Component} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-class Post_data extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      email:'',
-      username:'',
-      password:'',
-    }
-  }
-  changeHandler = (e) => {
-    this.setState({ [e.target.name]: e.target.value })
-  }
+function Post_data() {
+
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   
-  submitHandler = e => {
+  const state = {};
+  state.username = username;
+  state.email = email;
+  state.password = password;
+
+  const changeHandlerEmail = (e) => {
+    setEmail( e.target.value )
+  }
+  const changeHandlerUsername = (e) => {
+    setUsername( e.target.value )
+  }
+  const changeHandlerPassword = (e) => {
+    setPassword( e.target.value )
+  }
+
+  const submitHandler = e => {
     e.preventDefault()
-    console.log(this.state)
-    axios.post('http://localhost:8000/api/signup', this.state)
+    console.log(state)
+    axios.post('http://localhost:8000/api/signup', state)
       .then(res => {
         console.log(res);
       })
@@ -25,20 +33,17 @@ class Post_data extends Component {
         console.log(err);
       })
   }
-  render() {
-    const {email, username, password} = this.state
-
     return (
       <div>
-        <form onSubmit={this.submitHandler} >
+        <form onSubmit={submitHandler} >
           <div>
-            <input type='text' name='email' placeholder='Email' value={email} onChange={this.changeHandler} />
+            <input type='text' name='email' placeholder='Email' value={email} onChange={changeHandlerEmail} />
           </div>
           <div>
-            <input type='text' name='username' placeholder='Name' value={username} onChange={this.changeHandler} />
+            <input type='text' name='username' placeholder='Name' value={username} onChange={changeHandlerUsername} />
           </div>
           <div>
-            <input type='password' name='password' placeholder='Password' value={password} onChange={this.changeHandler} />
+            <input type='password' name='password' placeholder='Password' value={password} onChange={changeHandlerPassword} />
           </div>
           <div>
             <button type='submit' >Submit</button>
@@ -46,8 +51,6 @@ class Post_data extends Component {
         </form>
       </div>
     )
-  }
 }
 
 export { Post_data }
-
