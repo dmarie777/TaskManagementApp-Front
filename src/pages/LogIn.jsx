@@ -3,19 +3,14 @@ import axios from "axios";
 
 function  LogIn() {
     const [email, setEmail ] = useState('')
-    const [username, setUsername ] = useState('')
     const [password, setPassword ] = useState('')
 
     const state = {};
-    state.username = username;
     state.email = email;
     state.password = password;
 
     const changeHandlerEmail = (e) => {
         setEmail( e.target.value )
-      }
-      const changeHandlerUsername = (e) => {
-        setUsername( e.target.value )
       }
       const changeHandlerPassword = (e) => {
         setPassword( e.target.value )
@@ -23,14 +18,15 @@ function  LogIn() {
 
     const submitHandler = e => {
         e.preventDefault()
-        console.log(state)
-        axios.get('http://localhost:8000/api/login')
-          .then(res => {
-            console.log(res);
-          })
-          .catch(err => {
-            console.log(err);
-          })
+        axios.post('http://localhost:8000/api/login', state )
+        .then(res => {
+          if (res.status == 200) {
+            console.log("succes access")
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
       }
 
     return  (
@@ -39,9 +35,6 @@ function  LogIn() {
                 <div>
                     <input type='text' name='email' placeholder='Email' value={email} onChange={changeHandlerEmail}/>              
                 </div>
-                <div>
-                    <input type='text' name='username' placeholder='Name' value={username} onChange={changeHandlerUsername} />
-                 </div>
                  <div>
                      <input type='password' name='password' placeholder='Password' value={password} onChange={changeHandlerPassword} />
                 </div>
