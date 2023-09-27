@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import { LogIn } from './pages/LogIn.jsx'
+import { Post_data } from './pages/SignUp.jsx'
+import { Home } from './pages/Home.jsx'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './App.css'
 
 
@@ -17,8 +18,14 @@ function App() {
       
   return (
     <React.Fragment>
-      <LogIn/>
       <h1>{message}</h1>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/signup' element={<Post_data/>} />
+          <Route path='/login' element={<LogIn/>} />
+        </Routes>
+      </BrowserRouter>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
