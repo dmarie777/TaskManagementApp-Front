@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function Post_data() {
+function Register() {
 
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
-  const state = {};
-  state.username = username;
-  state.email = email;
-  state.password = password;
+  const [register, setRegister] = useState(false)
 
   const changeHandlerEmail = (e) => {
     setEmail( e.target.value )
@@ -24,10 +20,18 @@ function Post_data() {
 
   const submitHandler = e => {
     e.preventDefault()
-    console.log(state)
-    axios.post('http://localhost:8000/api/signup', state)
+    const configuration = {
+      method: "post",
+      url: 'http://localhost:8000/api/signup',
+      data: {
+        username,
+        email,
+        password,
+      }
+    }  
+    axios(configuration)
       .then(res => {
-        console.log(res);
+        setRegister(true)
       })
       .catch(err => {
         console.log(err);
@@ -49,8 +53,14 @@ function Post_data() {
             <button type='submit' >Submit</button>
           </div>
         </form>
+        {register ? (
+              <p>You Are Registered Successfully</p>
+            ): (
+              <p>You Are Not Registered</p>
+            )
+        }
       </div>
     )
 }
 
-export { Post_data }
+export { Register }

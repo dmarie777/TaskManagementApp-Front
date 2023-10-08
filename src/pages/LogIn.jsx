@@ -1,39 +1,51 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
 
 function  LogIn() {
-    const [email, setEmail ] = useState('')
-    const [username, setUsername ] = useState('')
-    const [password, setPassword ] = useState('')
+  const [email, setEmail ] = useState('')
+  const [username, setUsername ] = useState('')
+  const [password, setPassword ] = useState('')
+  const [login, setLogin] = useState(false)
 
-    const state = {};
-    state.username = username;
-    state.email = email;
-    state.password = password;
 
-    const changeHandlerEmail = (e) => {
-        setEmail( e.target.value )
-      }
-      const changeHandlerUsername = (e) => {
-        setUsername( e.target.value )
-      }
-      const changeHandlerPassword = (e) => {
-        setPassword( e.target.value )
-      }
+  const changeHandlerEmail = (e) => {
+    setEmail( e.target.value )
+  }
+  const changeHandlerUsername = (e) => {
+    setUsername( e.target.value )
+  }
+  const changeHandlerPassword = (e) => {
+    setPassword( e.target.value )
+  }
 
-    const submitHandler = e => {
-        e.preventDefault()
-        console.log(state)
-        axios.get('http://localhost:8000/api/login')
-          .then(res => {
-            console.log(res);
-          })
-          .catch(err => {
-            console.log(err);
-          })
+  const submitHandler = e => {
+    e.preventDefault()
+    const configuration = {
+      method: "post",
+      url: 'http://localhost:8000/api/login',
+      data: {
+        username,
+        email,
+        password,
       }
+    }  
+    axios(configuration)
+      .then(res => {
+      setLogin(true)
+        cookies.set("TOKEN", res.data.token, {
+        path: "/",
+        });
+        window.location.href = "/auth";
+      })
+      .catch(err => {
+          console.error(err);
+      })
+  }
 
-    return  (
+  return  (
        <div>
             <form onSubmit={submitHandler}>
                 <div>
@@ -49,6 +61,11 @@ function  LogIn() {
                     <button type='submit' >Submit</button>
                  </div>
             </form>
+            {login ? (
+              <p>You are Logged</p>
+            ): (
+              <p>You are not Logged</p>
+            ) }
        </div> 
     )
 }

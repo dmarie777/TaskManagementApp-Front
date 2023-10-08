@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { LogIn } from './pages/LogIn.jsx'
-import { Post_data } from './pages/SignUp.jsx'
+import { Register } from './pages/SignUp.jsx'
 import { Home } from './pages/Home.jsx'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Link } from 'react-router-dom'
 import './App.css'
-
+import FreeComponent from './components/FreeComponent.jsx'
+import AuthComponent from './components/AuthComponent.jsx'
+import ProtectedRoute from './components/ProtectedRoutes.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
   const [message, setMessage] = useState("")
 
   useEffect(() => {
@@ -19,24 +20,31 @@ function App() {
   return (
     <React.Fragment>
       <h1>{message}</h1>
-      <BrowserRouter>
+
+      <BrowserRouter> 
+        <div className = "links">
+          <Link to="/" >home</Link>
+          <Link to="/signup" >Sign up</Link>
+          <Link to="/login" >Login</Link>
+          <Link to="/free" >Free</Link>
+
+        </div>
+
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/signup' element={<Post_data/>} />
+          <Route path='/signup' element={<Register/>} />
           <Route path='/login' element={<LogIn/>} />
+          <Route path='/free' element={<FreeComponent/>} />
+          <Route 
+            path='/auth' 
+            element={
+              <ProtectedRoute >
+                <AuthComponent/>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </React.Fragment>
   )
 }
